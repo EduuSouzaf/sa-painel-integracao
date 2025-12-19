@@ -1,0 +1,7 @@
+.app-header { position: fixed; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; background: var(--primary); color: #fff; border-bottom: 1px solid color-mix(in oklab, var(--primary) 40%, var(--border)); z-index: 50; box-shadow: 0 2px 8px color-mix(in oklab, var(--primary) 25%, transparent); }
+.app-header.collapsed { left: 0; }
+.app-header .left { display: flex; align-items: center; gap: 12px; }
+.logo { font-size: 1rem; color: #fff; margin: 0; }
+.right { display: flex; align-items: center; gap: 8px; }
+.hamburger { width: 36px; height: 36px; display: inline-flex; flex-direction: column; justify-content: center; gap: 4px; border-radius: 8px; border: 1px solid color-mix(in oklab, var(--primary) 40%, var(--border)); background: color-mix(in oklab, #fff 12%, transparent); }
+.hamburger span { height: 2px; background: currentColor; margin: 0 8px; }

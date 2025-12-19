@@ -1,0 +1,15 @@
+.page-header { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+.page-title { font-size: 1.25rem; font-weight: 800; }
+.page-subtitle { color: var(--muted); }
+
+.filas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.filas-search { flex: 1; background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; outline: none; }
+.filas-search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent); }
+.filas-btn-filters { padding: 10px 14px; background: transparent; border: 1px solid var(--border); border-radius: 10px; color: var(--text); cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.filas-btn-filters:hover { background: color-mix(in oklab, var(--text) 4%, transparent); }
+.filas-btn-refresh { padding: 10px 14px; background: var(--primary); color: #fff; border: 1px solid color-mix(in oklab, var(--primary) 40%, var(--border)); border-radius: 10px; cursor: pointer; font-weight: 700; }
+.filas-btn-refresh:hover { background: var(--primary-light); }
+
+.alert-warning { border: 1px solid color-mix(in oklab, #f59e0b 40%, var(--border)); background: color-mix(in oklab, #f59e0b 12%, transparent); color: color-mix(in oklab, #f59e0b 90%, var(--text)); padding: 10px 12px; border-radius: 10px; margin-bottom: 12px; }
+
+.alert-error { border: 1px solid color-mix(in oklab, red 40%, var(--border)); background: color-mix(in oklab, red 12%, transparent); color: color-mix(in oklab, red 80%, var(--text)); padding: 10px 12px; border-radius: 10px; margin-bottom: 12px; }

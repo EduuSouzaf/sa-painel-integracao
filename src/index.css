@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0d1117;
+  --bg-elev: #161b22;
+  --bg-hover: #1c2128;
+  --text: #e6edf3;
+  --text-secondary: #c9d1d9;
+  --muted: #8b949e;
+  --primary: #1f6feb;
+  --primary-light: #388bfd;
+  --secondary: #30a46c;
+  --success: #3fb950;
+  --warning: #d29922;
+  --error: #f85149;
+  --card: #0d1117;
+  --border: #30363d;
+  --border-subtle: #21262d;
+  --wave-1: #0d47a1;
+  --wave-2: #1565c0;
+  --wave-3: #1976d2;
+  --shadow: rgba(0, 0, 0, 0.4);
+}
+
+.theme-light {
+  --bg: #ffffff;
+  --bg-elev: #f6f8fa;
+  --bg-hover: #f3f6f8;
+  --text: #24292f;
+  --text-secondary: #424a50;
+  --muted: #6e7681;
+  --primary: #0969da;
+  --primary-light: #0a3dc1;
+  --secondary: #1a7f37;
+  --success: #1a7f37;
+  --warning: #b08800;
+  --error: #da3633;
+  --card: #ffffff;
+  --border: #d8dee4;
+  --border-subtle: #eaeef2;
+  --wave-1: #55a9db;
+  --wave-2: #8cc9f0;
+  --wave-3: #cfe9ff;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  transition: background-color 200ms ease, color 200ms ease;
+  overflow-x: hidden;
+}
+
+/* Scrollbar sutil com estilo moderno */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg-elev);
+}
+*::-webkit-scrollbar { height: 8px; width: 8px; }
+*::-webkit-scrollbar-track { background: var(--bg-elev); }
+*::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; transition: background 0.2s ease; }
+*::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* Utilidades adicionais */
+.container-fluid {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.elev-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+.elev-card:hover {
+  border-color: var(--border-subtle);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.fade-in-up { 
+  animation: fadeInUp 400ms ease both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

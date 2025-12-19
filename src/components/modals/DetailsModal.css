@@ -1,0 +1,40 @@
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: grid; place-items: center; z-index: 1000; }
+
+.modal-details { width: min(900px, 94vw); max-height: 90vh; background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg-base); }
+
+.modal-close { background: transparent; border: 0; font-size: 24px; color: var(--muted); cursor: pointer; padding: 0; line-height: 1; }
+.modal-close:hover { color: var(--text); }
+
+.modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+
+.detail-field { margin-bottom: 16px; }
+.detail-field:last-child { margin-bottom: 0; }
+
+.detail-field strong { display: block; margin-bottom: 6px; color: var(--text); font-size: 14px; }
+
+.detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+
+.btn-expand { background: transparent; border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; cursor: pointer; color: var(--text); display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
+.btn-expand:hover { background: var(--bg-base); border-color: var(--primary); color: var(--primary); }
+
+.detail-content { background: var(--bg-base); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-family: 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; color: var(--text); }
+
+.detail-content.scrollable { max-height: 200px; overflow-y: auto; }
+
+.detail-content.expanded { max-height: 70vh; overflow-y: auto; }
+
+.modal-footer { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; background: var(--bg-base); }
+
+.btn-close { background: #2563eb; color: white; border: none; border-radius: 6px; padding: 8px 20px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-close:hover { background: #1d4ed8; }
+
+/* JSON Syntax Highlighting */
+.json-highlighted { background: #1e1e1e; border-radius: 6px; }
+.json-highlighted code { color: #d4d4d4; font-family: 'Consolas', 'Courier New', monospace; }
+.json-key { color: #9cdcfe; }
+.json-string { color: #ce9178; }
+.json-number { color: #b5cea8; }
+.json-boolean { color: #569cd6; font-weight: 600; }
+.json-null { color: #569cd6; font-weight: 600; }

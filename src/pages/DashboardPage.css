@@ -1,0 +1,15 @@
+.page-header { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+.page-title { font-size: 1.25rem; font-weight: 800; }
+.page-subtitle { color: var(--muted); }
+
+.alert-warning { border: 1px solid color-mix(in oklab, #f59e0b 40%, var(--border)); background: color-mix(in oklab, #f59e0b 12%, transparent); color: color-mix(in oklab, #f59e0b 90%, var(--text)); padding: 10px 12px; border-radius: 10px; margin-bottom: 16px; }
+
+@media (max-width: 1400px) { .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .kpi-grid { grid-template-columns: 1fr; } }
+
+.section-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 10px 22px color-mix(in oklab, var(--text) 6%, transparent); }
+.section-card .section-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+.section-card .section-title { font-weight: 800; }
+.section-card .section-sub { color: var(--muted); font-size: .9rem; }
+.section-card .section-body { padding: 14px 10px; }

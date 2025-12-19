@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sa-painel-integracao</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Carrega app-config.json ANTES do bundle
+      (async function() {
+        try {
+          const res = await fetch('/app-config.json', { cache: 'no-store' });
+          window.__APP_CONFIG__ = res.ok ? await res.json() : {};
+          console.log('[Config] Carregado:', window.__APP_CONFIG__);
+        } catch (e) {
+          window.__APP_CONFIG__ = {};
+          console.warn('[Config] Erro:', e.message);
+        }
+      })();
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

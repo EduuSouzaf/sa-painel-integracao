@@ -1,0 +1,16 @@
+.app-sidebar { position: fixed; top: 64px; bottom: 0; left: 0; width: 240px; background: var(--bg-elev); border-right: 1px solid var(--border); padding: 12px; transition: width 220ms ease; overflow: hidden; display: flex; flex-direction: column; }
+.app-sidebar.collapsed { width: 64px; }
+
+.sidebar-header { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 12px; margin-bottom: 8px; border-bottom: 1px solid var(--border); transition: padding 180ms ease, margin 180ms ease, opacity 160ms ease; }
+.sidebar-logo { height: 44px; width: auto; max-width: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; filter: drop-shadow(0 0 0 transparent); }
+.app-sidebar.collapsed .sidebar-header { padding: 0; margin: 0 0 6px 0; border-bottom: none; opacity: 0; height: 0; overflow: hidden; }
+.sidebar-title { font-weight: 600; font-size: 0.9rem; color: var(--text); white-space: nowrap; }
+.app-sidebar.collapsed .sidebar-title { display: none; }
+
+.app-sidebar nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.link { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; color: var(--text); text-decoration: none; border: 1px solid transparent; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, padding 150ms ease; }
+.link:hover { background: color-mix(in oklab, var(--text) 6%, transparent); }
+.link.active { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 10%, transparent); }
+.link span { white-space: nowrap; transition: opacity 160ms ease, max-width 160ms ease; max-width: 200px; }
+.app-sidebar.collapsed .link { justify-content: center; }
+.app-sidebar.collapsed .link span { opacity: 0; max-width: 0; overflow: hidden; }

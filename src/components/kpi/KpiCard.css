@@ -1,0 +1,7 @@
+.kpi-card { position: relative; padding: 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-elev); box-shadow: 0 10px 22px color-mix(in oklab, var(--text) 6%, transparent); animation: fadeInUp 300ms ease both; }
+.kpi-chip { position: absolute; right: 12px; top: 12px; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 18px; }
+.kpi-title { color: var(--muted); font-weight: 700; font-size: .9rem; }
+.kpi-value { font-size: 1.8rem; font-weight: 900; margin-top: 2px; }
+.kpi-success .kpi-chip { background: #dcfce7; color: #166534; }
+.kpi-error .kpi-chip { background: #fee2e2; color: #991b1b; }
+.kpi-warning .kpi-chip { background: #fef3c7; color: #92400e; }

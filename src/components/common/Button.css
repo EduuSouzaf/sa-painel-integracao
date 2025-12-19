@@ -1,0 +1,9 @@
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 12px; border: 1px solid transparent; font-weight: 700; min-height: 44px; }
+.btn-primary { background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 94%, white), var(--primary)); color: white; box-shadow: 0 4px 14px color-mix(in oklab, var(--primary) 35%, transparent); }
+.btn-ghost { background: transparent; border-color: var(--border); color: var(--text); }
+.btn:hover { filter: brightness(1.05); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.spinner { width: 16px; height: 16px; border: 2px solid color-mix(in oklab, white 60%, transparent); border-top-color: transparent; border-radius: 9999px; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+/* utilidade */
+.w-full { width: 100%; }
