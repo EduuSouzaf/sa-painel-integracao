@@ -9,12 +9,15 @@
 .app-sidebar.collapsed .sidebar-title { display: none; }
 
 .app-sidebar nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-.link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: color-mix(in oklab, var(--text) 80%, transparent); text-decoration: none; border: 1px solid transparent; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, padding 150ms ease; font-size: .95rem; min-height: 44px; }
-.link:hover { background: color-mix(in oklab, var(--text) 5%, transparent); color: var(--text); }
-.link.active { border-color: color-mix(in oklab, var(--primary) 40%, var(--border)); background: color-mix(in oklab, var(--primary) 10%, transparent); color: var(--text); box-shadow: inset 3px 0 0 var(--primary); }
-.link svg { font-size: 18px; color: currentColor; }
-.link span { white-space: nowrap; transition: opacity 160ms ease, max-width 160ms ease; max-width: 200px; }
+.link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: color-mix(in oklab, var(--muted) 85%, transparent); text-decoration: none; border: 1px solid transparent; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, padding 150ms ease, box-shadow 150ms ease; font-size: .95rem; min-height: 44px; position: relative; }
+.link:hover { background: color-mix(in oklab, var(--text) 4%, transparent); color: color-mix(in oklab, var(--text) 90%, transparent); }
+.link.active { border-color: transparent; background: color-mix(in oklab, var(--text) 6%, transparent); color: var(--text); box-shadow: inset 3px 0 0 #3b82f6; }
+.link svg { font-size: 18px; color: color-mix(in oklab, var(--muted) 70%, transparent); transition: color 150ms ease; }
+.link:hover svg { color: color-mix(in oklab, var(--text) 85%, transparent); }
+.link.active svg { color: #3b82f6; }
+.link span { white-space: nowrap; transition: opacity 160ms ease, max-width 160ms ease; max-width: 200px; font-weight: 500; }
+.link.active span { font-weight: 600; }
 .app-sidebar.collapsed .link { justify-content: center; padding: 10px; width: 48px; height: 48px; margin-inline: auto; border-radius: 12px; }
 .app-sidebar.collapsed .link svg { font-size: 20px; }
-.app-sidebar.collapsed .link.active { border-color: color-mix(in oklab, var(--primary) 40%, var(--border)); background: color-mix(in oklab, var(--primary) 12%, transparent); box-shadow: inset 3px 0 0 var(--primary); }
+.app-sidebar.collapsed .link.active { border-color: transparent; background: color-mix(in oklab, var(--text) 7%, transparent); box-shadow: inset 3px 0 0 #3b82f6; }
 .app-sidebar.collapsed .link span { opacity: 0; max-width: 0; overflow: hidden; }
