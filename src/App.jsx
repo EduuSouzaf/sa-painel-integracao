@@ -16,7 +16,7 @@ function ProtectedRoute({ children }) {
 }
 
 function AppLayout() {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   return (
     <div className="app-shell">
       <Header collapsed={collapsed} onToggleSidebar={() => setCollapsed((s) => !s)} />
