@@ -164,6 +164,14 @@ export const FluxoEnumFilas = [
 
 const findByKey = (list, key) => list.find((i) => i.key === key)
 
+// Mapeamento de labels em português para tipos SAP
+const TipoSapLabelMap = {
+  'SalesQuotation': 'Cotação de vendas',
+  'SalesOrder': 'Pedido de venda',
+  'BusinessPartners': 'Parceiro de negócios',
+  'Items': 'Items',
+}
+
 export function tipoAgroLabel(key) {
   const it = findByKey(TipoAgroObjetoEnum, Number(key))
   return it ? it.value : 'Desconhecido'
@@ -171,7 +179,28 @@ export function tipoAgroLabel(key) {
 
 export function tipoSapLabel(key) {
   const it = findByKey(TipoObjetoEnum, Number(key))
-  return it ? it.value : 'Desconhecido'
+  if (!it) return 'Desconhecido'
+  // Retorna o label traduzido se existir, senão retorna o value original
+  return TipoSapLabelMap[it.value] || it.value
+}
+
+// Informações para badge semântico de Tipo SAP
+export function tipoSapBadgeInfo(key) {
+  const it = findByKey(TipoObjetoEnum, Number(key))
+  const val = it?.value
+  if (!val) return { label: '—', color: 'type-gray', tooltipPrimary: '—', tooltipSecondary: '—' }
+  switch (val) {
+    case 'SalesQuotation':
+      return { label: 'Cotação', color: 'type-blue', tooltipPrimary: 'SalesQuotation', tooltipSecondary: 'Cotação de vendas' }
+    case 'SalesOrder':
+      return { label: 'Pedido', color: 'type-green', tooltipPrimary: 'SalesOrder', tooltipSecondary: 'Pedido de venda' }
+    case 'BusinessPartners':
+      return { label: 'Parceiro', color: 'type-purple', tooltipPrimary: 'BusinessPartner', tooltipSecondary: 'Cliente / Fornecedor' }
+    case 'Items':
+      return { label: 'Item', color: 'type-orange', tooltipPrimary: 'Item', tooltipSecondary: 'Cadastro de item' }
+    default:
+      return { label: TipoSapLabelMap[val] || val, color: 'gray', tooltipPrimary: val, tooltipSecondary: '—' }
+  }
 }
 
 export function statusFilasLabel(key) {

@@ -12,11 +12,31 @@ import Badge from '../common/Badge'
 import Skeleton from '../common/Skeleton'
 import Button from '../common/Button'
 import ActionsMenu from './ActionsMenu'
+import TableFilters from './TableFilters'
+import ActiveFilters from './ActiveFilters'
 import { statusLabel, statusColor } from '../../utils/enums'
-import { fluxoFilasLabel, metodoFilasLabel, tipoAgroLabel, tipoSapLabel } from '../../utils/filasEnums'
-import { FiEye, FiFileText, FiRefreshCw, FiCode, FiFile, FiCheckSquare } from 'react-icons/fi'
+import { fluxoFilasLabel, metodoFilasLabel, tipoSapBadgeInfo } from '../../utils/filasEnums'
+import { FiEye, FiFileText, FiRefreshCw, FiCode, FiFile, FiCheckSquare, FiSliders } from 'react-icons/fi'
 
-export default function Table({ data, loading, onView, onLogs, onReprocess, onViewJson, rowsPerPage = 50 }) {
+export default function Table({
+  data,
+  loading,
+  onView,
+  onLogs,
+  onReprocess,
+  onViewJson,
+  rowsPerPage = 50,
+  onRefresh,
+  onToggleFilters,
+  onRowsPerPageChange,
+  showFilters,
+  onFilterChange,
+  onCloseFilters,
+  filters,
+  onRemoveFilter,
+  onClearAllFilters,
+  hideActiveFiltersWhenOpen = true,
+}) {
   const columns = useMemo(
     () => [
       { header: 'ID', accessorKey: 'id' },
@@ -35,11 +55,11 @@ export default function Table({ data, loading, onView, onLogs, onReprocess, onVi
       },
       {
         header: 'Tipo SAP',
-        cell: ({ row }) => tipoSapLabel(row.original?.raw?.tipoSAP),
-      },
-      {
-        header: 'Tipo Agro',
-        cell: ({ row }) => tipoAgroLabel(row.original?.raw?.tipoAgro),
+        cell: ({ row }) => {
+          const info = tipoSapBadgeInfo(row.original?.raw?.tipoSAP)
+          const title = `${info.tooltipPrimary}\n${info.tooltipSecondary}`
+          return <Badge color={info.color} className="badge-type" title={title}>{info.label}</Badge>
+        },
       },
       {
         header: 'Fluxo',
@@ -130,8 +150,19 @@ export default function Table({ data, loading, onView, onLogs, onReprocess, onVi
     return () => clearTimeout(t)
   }, [inputValue])
 
+  const effectiveData = useMemo(() => {
+    if (!globalFilter) return data || []
+    const g = String(globalFilter).toLowerCase()
+    return (data || []).filter((item) => {
+      const idMatch = String(item.id).toLowerCase().includes(g)
+      const statusMatch = String(item.status).toLowerCase().includes(g)
+      const objetoMatch = String(item?.raw?.objeto ?? '').toLowerCase().includes(g)
+      return idMatch || statusMatch || objetoMatch
+    })
+  }, [data, globalFilter])
+
   const table = useReactTable({
-    data: data || [],
+    data: effectiveData,
     columns,
     state: { globalFilter },
     onGlobalFilterChange: setGlobalFilter,
@@ -152,7 +183,60 @@ export default function Table({ data, loading, onView, onLogs, onReprocess, onVi
 
   return (
     <div className="table-wrap">
-      {/* toolbar removida: manter apenas busca principal da página */}
+      <div className="table-toolbar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <input
+            className="table-search"
+            type="text"
+            placeholder="Buscar..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            style={{ flex: 1 }}
+          />
+        </div>
+        <div className="table-toolbar-actions">
+          <button
+            className="table-btn table-btn-refresh"
+            onClick={onRefresh}
+            title="Atualizar dados"
+          >
+            <FiRefreshCw size={15} />
+          </button>
+          <button
+            className="table-btn table-btn-filters"
+            onClick={onToggleFilters}
+            title="Filtros avançados"
+          >
+            <FiSliders size={15} />
+          </button>
+          <div className="rows-per-page-control">
+            <label htmlFor="rows-select">Linhas:</label>
+            <select
+              id="rows-select"
+              className="rows-select"
+              value={rowsPerPage}
+              onChange={(e) => onRowsPerPageChange?.(Number(e.target.value))}
+            >
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {(!hideActiveFiltersWhenOpen || !showFilters) && (
+        <ActiveFilters
+          filters={filters || {}}
+          onRemoveFilter={onRemoveFilter}
+          onClearAll={onClearAllFilters}
+        />
+      )}
+
+      {showFilters && (
+        <TableFilters onFilterChange={onFilterChange} onClose={onCloseFilters} />
+      )}
 
       <div className="overflow-x-auto">
         <table className="data-table">

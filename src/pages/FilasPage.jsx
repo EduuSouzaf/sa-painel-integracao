@@ -5,11 +5,11 @@ import LogsModal from '../components/modals/LogsModal'
 import DetailsModal from '../components/modals/DetailsModal'
 import JsonViewer from '../components/common/JsonViewer'
 import Toast from '../components/common/Toast'
-import TableFilters from '../components/table/TableFilters'
+// TableFilters agora é renderizado dentro do componente Table
 import SummaryCards from '../components/kpi/SummaryCards'
-import ActiveFilters from '../components/table/ActiveFilters'
+// ActiveFilters agora é renderizado dentro do componente Table
 import './FilasPage.css'
-import { FiSliders, FiAlertTriangle, FiXCircle, FiRefreshCw } from 'react-icons/fi'
+import { FiAlertTriangle, FiXCircle } from 'react-icons/fi'
 import { getFilas, getLogsById, reprocessar } from '../services/api/filas'
 import { toStatusFilas, fluxoFilasLabel, metodoFilasLabel } from '../utils/filasEnums'
 
@@ -19,7 +19,7 @@ export default function FilasPage() {
   const [loading, setLoading] = useState(true)
   const [details, setDetails] = useState(null)
   const [logs, setLogs] = useState({ open: false, items: [] })
-  const [searchInput, setSearchInput] = useState('')
+  // Busca global agora é feita dentro do componente Table
   const [error, setError] = useState('')
   const [jsonView, setJsonView] = useState(null)
   const [apiError, setApiError] = useState('')
@@ -84,16 +84,9 @@ export default function FilasPage() {
     load()
   }, [load])
 
-  // Aplicar filtros e busca
+  // Aplicar filtros avançados (busca global foi movida para a tabela)
   useEffect(() => {
     let filtered = data
-    
-    // Filtro de busca por ID
-    if (searchInput) {
-      filtered = filtered.filter(item =>
-        item.id.toString().toLowerCase().includes(searchInput.toLowerCase())
-      )
-    }
     
     // Aplicar filtros avançados
     if (Object.values(filters).some(v => v !== '')) {
@@ -101,18 +94,18 @@ export default function FilasPage() {
         const raw = item.raw || {}
         if (filters.id && !item.id.toString().includes(filters.id)) return false
         if (filters.data && !new Date(item.createdAt).toLocaleDateString('pt-BR').includes(filters.data)) return false
-        if (filters.baseSap && !raw.baseSap?.toLowerCase().includes(filters.baseSap.toLowerCase())) return false
-        if (filters.baseAgro && !raw.baseAgro?.toLowerCase().includes(filters.baseAgro.toLowerCase())) return false
-        if (filters.tipoSap && !raw.tipoSap?.toString().toLowerCase().includes(filters.tipoSap.toLowerCase())) return false
+        if (filters.baseSap && !raw.baseDadosSAP?.toLowerCase().includes(filters.baseSap.toLowerCase())) return false
+        if (filters.baseAgro && !raw.baseDadosAgro?.toLowerCase().includes(filters.baseAgro.toLowerCase())) return false
+        if (filters.tipoSap && !raw.tipoSAP?.toString().toLowerCase().includes(filters.tipoSap.toLowerCase())) return false
         if (filters.tipoAgro && !raw.tipoAgro?.toString().toLowerCase().includes(filters.tipoAgro.toLowerCase())) return false
-        if (filters.idObjetoSap && !raw.idObjetoSap?.toString().includes(filters.idObjetoSap)) return false
+        if (filters.idObjetoSap && !raw.idObjeto?.toString().includes(filters.idObjetoSap)) return false
         if (filters.idObjetoAgro && !raw.idObjetoAgro?.toString().includes(filters.idObjetoAgro)) return false
         return true
       })
     }
     
     setFilteredData(filtered)
-  }, [data, searchInput, filters])
+  }, [data, filters])
 
   const onView = (row) => {
     // Abre o modal de detalhes com os dados brutos da fila
@@ -159,7 +152,6 @@ export default function FilasPage() {
 
   const onClearAllFilters = () => {
     setFilters({})
-    setSearchInput('')
   }
 
   return (
@@ -169,50 +161,15 @@ export default function FilasPage() {
           <div className="page-title">Gerenciamento de Filas</div>
           <div className="page-subtitle">Monitore e gerencie as integrações do sistema.</div>
         </div>
-        <div className="page-actions">
-          <button className="filas-btn-refresh" onClick={load} title="Atualizar dados">
-            <FiRefreshCw size={15} />
-          </button>
-          <button className="filas-btn-filters" onClick={() => setShowFilters(!showFilters)} title="Filtros avançados">
-            <FiSliders size={15} />
-          </button>
-        </div>
       </div>
 
       <SummaryCards data={filteredData} onFilterClick={onSummaryCardClick} />
 
-      <div className="filas-toolbar">
-        <input
-          className="filas-search"
-          type="text"
-          placeholder="Buscar por ID, Objeto ou Status..."
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
-        <div className="rows-per-page-control">
-          <label htmlFor="rows-select">Linhas:</label>
-          <select
-            id="rows-select"
-            className="rows-select"
-            value={rowsPerPage}
-            onChange={(e) => setRowsPerPage(Number(e.target.value))}
-          >
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-            <option value={200}>200</option>
-          </select>
-        </div>
-      </div>
+      {/* Barra de busca, atualizar e filtros foi movida para dentro do componente Table */}
 
-      {showFilters && (
-        <TableFilters
-          onFilterChange={setFilters}
-          onClose={() => setShowFilters(false)}
-        />
-      )}
+      {/* Filtros avançados renderizados dentro do Table */}
 
-      <ActiveFilters filters={filters} onRemoveFilter={onRemoveFilter} onClearAll={onClearAllFilters} />
+      {/* ActiveFilters movido para dentro do container da tabela */}
 
       {apiError ? (
         <div className="alert-warning" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -236,6 +193,16 @@ export default function FilasPage() {
           onLogs={onLogs} 
           onReprocess={onReprocess} 
           rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={setRowsPerPage}
+          onRefresh={load}
+          onToggleFilters={() => setShowFilters(!showFilters)}
+          showFilters={showFilters}
+          onFilterChange={setFilters}
+          onCloseFilters={() => setShowFilters(false)}
+          filters={filters}
+          onRemoveFilter={onRemoveFilter}
+          onClearAllFilters={onClearAllFilters}
+          hideActiveFiltersWhenOpen={true}
           onViewJson={(row, field, title) => {
             const payload = row?.raw?.[field]
             if (!payload) return setError(`Campo ${title} indisponível`)

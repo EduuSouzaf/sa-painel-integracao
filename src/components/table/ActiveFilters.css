@@ -1,21 +1,21 @@
 .active-filters {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: color-mix(in oklab, var(--primary) 8%, transparent);
-  border: 1px solid color-mix(in oklab, var(--primary) 20%, transparent);
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
   border-radius: 10px;
-  margin-bottom: 16px;
+  margin: 10px;
   flex-wrap: wrap;
 }
 
 .filters-label {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   white-space: nowrap;
 }
 
@@ -30,11 +30,11 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
-  background: var(--primary);
+  padding: 5px 10px;
+  background: color-mix(in oklab, var(--primary) 92%, #ffffff);
   color: #fff;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  border-radius: 16px;
+  font-size: 0.82rem;
   font-weight: 500;
   max-width: 240px;
 }
@@ -78,10 +78,10 @@
 .clear-all-btn {
   padding: 6px 12px;
   background: transparent;
-  border: 1px solid var(--primary);
-  color: var(--primary);
+  border: 1px solid var(--border);
+  color: color-mix(in oklab, var(--text) 85%, transparent);
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms ease;
@@ -90,7 +90,7 @@
 }
 
 .clear-all-btn:hover {
-  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  background: color-mix(in oklab, var(--text) 4%, transparent);
 }
 
 .clear-all-btn:active {

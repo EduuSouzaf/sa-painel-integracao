@@ -1,6 +1,23 @@
 .table-wrap { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-.table-toolbar { padding: 10px; border-bottom: 1px solid var(--border); }
+.table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
 .table-search { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+.table-toolbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.table-btn { padding: 8px 12px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: color-mix(in oklab, var(--text) 85%, transparent); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; font-size: 0.88rem; transition: all 150ms ease; }
+.table-btn:hover { background: color-mix(in oklab, var(--text) 4%, transparent); color: var(--text); border-color: color-mix(in oklab, var(--border) 120%, transparent); }
+.table-btn-refresh {}
+.table-btn-filters {}
+.rows-per-page-control { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.rows-per-page-control label { font-size: 0.88rem; color: color-mix(in oklab, var(--text) 85%, transparent); font-weight: 500; }
+.rows-select { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; outline: none; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+.rows-select:hover { border-color: color-mix(in oklab, var(--primary) 70%, var(--border)); }
+.rows-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 16%, transparent); }
+
+/* Responsividade da toolbar dentro da tabela */
+@media (max-width: 900px) {
+	.table-toolbar { flex-direction: column; align-items: stretch; }
+	.table-toolbar-actions { justify-content: space-between; }
+	.table-search { flex: 1; min-width: 240px; }
+}
 .overflow-x-auto { overflow-x: auto; overflow-y: auto; max-height: 600px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 .overflow-x-auto::-webkit-scrollbar { height: 8px; width: 8px; }
 .overflow-x-auto::-webkit-scrollbar-track { background: transparent; }

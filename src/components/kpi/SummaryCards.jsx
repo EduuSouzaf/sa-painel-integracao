@@ -19,7 +19,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
     },
     {
       id: 'success',
-      label: 'Sucessos',
+      label: 'Sucesso',
       value: success.toLocaleString('pt-BR'),
       icon: <FiCheckCircle size={18} />,
       color: '#3fb950',
@@ -27,7 +27,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
     },
     {
       id: 'errors',
-      label: 'Erros',
+      label: 'Erro',
       value: errors.toLocaleString('pt-BR'),
       icon: <FiXCircle size={18} />,
       color: '#f85149',
@@ -35,7 +35,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
     },
     {
       id: 'deadletter',
-      label: 'Dead Letter',
+      label: 'Aguardando',
       value: deadLetter.toLocaleString('pt-BR'),
       icon: <FiAlertTriangle size={18} />,
       color: '#d29922',
