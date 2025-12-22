@@ -1,17 +1,22 @@
-.table-wrap { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.table-wrap { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
 .table-toolbar { padding: 10px; border-bottom: 1px solid var(--border); }
 .table-search { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
-.overflow-x-auto { overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-.overflow-x-auto::-webkit-scrollbar { height: 8px; }
+.overflow-x-auto { overflow-x: auto; overflow-y: auto; max-height: 600px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.overflow-x-auto::-webkit-scrollbar { height: 8px; width: 8px; }
 .overflow-x-auto::-webkit-scrollbar-track { background: transparent; }
 .overflow-x-auto::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 .overflow-x-auto::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 .data-table { width: 100%; border-collapse: collapse; min-width: 1400px; }
 .data-table th, .data-table td { padding: 12px 10px; border-bottom: 1px solid var(--border); text-align: left; font-size: .9rem; }
-.data-table th { cursor: pointer; color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: .8rem; letter-spacing: .5px; user-select: none; }
+.data-table th { cursor: pointer; color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: .8rem; letter-spacing: .5px; user-select: none; background: var(--bg-elev); position: sticky; top: 0; z-index: 10; }
 .data-table th:hover { color: var(--text); }
-.data-table tr:hover td { background: color-mix(in oklab, var(--text) 4%, transparent); transition: background 0.15s ease; }
+.data-table tbody tr:nth-child(odd) { background: color-mix(in oklab, var(--text) 2%, transparent); }
+.data-table tbody tr:hover td { background: color-mix(in oklab, var(--primary) 8%, transparent); transition: background 0.15s ease; }
 .data-table tbody tr { transition: background 0.15s ease; }
+.data-table td { font-variant-numeric: tabular-nums; }
+.data-table [class*="ID"] { font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace; font-size: 0.85rem; color: var(--muted); }
+.status-cell { cursor: help; }
+.status-cell > * { position: relative; }
 .table-actions { display: flex; gap: 6px; align-items: center; }
 .action-btn { border: 0; cursor: pointer; color: white; padding: 6px 12px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; font-size: .85rem; font-weight: 500; }
 .action-btn:hover { transform: scale(1.05); filter: brightness(1.1); }

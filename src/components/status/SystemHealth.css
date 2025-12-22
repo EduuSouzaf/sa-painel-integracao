@@ -1,0 +1,9 @@
+.sys-health { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-elev); box-shadow: 0 8px 18px color-mix(in oklab, var(--text) 6%, transparent); }
+.sys-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; font-size: 18px; }
+.sys-content { display: flex; flex-direction: column; }
+.sys-title { font-weight: 800; }
+.sys-message { color: var(--muted); font-size: .92rem; }
+
+.sys-ok .sys-icon { background: #dcfce7; color: #166534; }
+.sys-warn .sys-icon { background: #fef3c7; color: #92400e; }
+.sys-bad .sys-icon { background: #fee2e2; color: #991b1b; }

@@ -1,0 +1,5 @@
+.top-errors-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.top-errors-list li { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-base); }
+.top-errors-list li .label { font-weight: 700; }
+.top-errors-list li .count { font-weight: 900; color: #ef4444; }
+.top-errors-list li.empty { justify-content: center; color: var(--muted); font-style: italic; }

@@ -1,0 +1,5 @@
+.section-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 10px 22px color-mix(in oklab, var(--text) 6%, transparent); }
+.section-card .section-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+.section-card .section-title { font-weight: 800; }
+.section-card .section-sub { color: var(--muted); font-size: .9rem; }
+.section-card .section-body { padding: 14px 10px; }

@@ -1,10 +1,13 @@
 import { useEffect, useState, useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
 import Table from '../components/table/Table'
 import LogsModal from '../components/modals/LogsModal'
 import DetailsModal from '../components/modals/DetailsModal'
 import JsonViewer from '../components/common/JsonViewer'
 import Toast from '../components/common/Toast'
 import TableFilters from '../components/table/TableFilters'
+import SummaryCards from '../components/kpi/SummaryCards'
+import ActiveFilters from '../components/table/ActiveFilters'
 import './FilasPage.css'
 import { FiSliders, FiAlertTriangle, FiXCircle } from 'react-icons/fi'
 import { getFilas, getLogsById, reprocessar } from '../services/api/filas'
@@ -23,6 +26,8 @@ export default function FilasPage() {
   const [toasts, setToasts] = useState([])
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState({})
+  const [rowsPerPage, setRowsPerPage] = useState(50)
+  const location = useLocation()
 
   useEffect(() => {
     const err = sessionStorage.getItem('apiError')
@@ -31,6 +36,13 @@ export default function FilasPage() {
       sessionStorage.removeItem('apiError')
     }
   }, [])
+  // Aplica filtros pré-definidos vindos da navegação do dashboard
+  useEffect(() => {
+    const preset = location?.state?.presetFilters
+    if (preset && typeof preset === 'object') {
+      setFilters((prev) => ({ ...prev, ...preset }))
+    }
+  }, [location?.state])
   const mapItem = (it) => ({
     id: it?.id ?? it?.identificador ?? it?.uuid ?? '—',
     status: toStatusFilas(it?.status ?? it?.codigoStatus ?? it?.situacao),
@@ -134,12 +146,38 @@ export default function FilasPage() {
     setToasts((prev) => prev.filter((toast) => toast.id !== id))
   }
 
+  const onSummaryCardClick = (status) => {
+    setFilters({ ...filters, status: status === 'warning' ? 'warning' : status })
+    setShowFilters(false)
+  }
+
+  const onRemoveFilter = (key) => {
+    const newFilters = { ...filters }
+    delete newFilters[key]
+    setFilters(newFilters)
+  }
+
+  const onClearAllFilters = () => {
+    setFilters({})
+    setSearchInput('')
+  }
+
   return (
     <div className="container-fluid" style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: '100%' }}>
       <div className="page-header">
-        <div className="page-title">Gerenciamento de Filas</div>
-        <div className="page-subtitle">Monitore e gerencie as integrações do sistema.</div>
+        <div className="page-header-left">
+          <div className="page-title">Gerenciamento de Filas</div>
+          <div className="page-subtitle">Monitore e gerencie as integrações do sistema.</div>
+        </div>
+        <div className="page-actions">
+          <button className="filas-btn-refresh" onClick={load} title="Atualizar dados">Atualizar</button>
+          <button className="filas-btn-filters" onClick={() => setShowFilters(!showFilters)}>
+            <FiSliders /> Filtros
+          </button>
+        </div>
       </div>
+
+      <SummaryCards data={filteredData} onFilterClick={onSummaryCardClick} />
 
       <div className="filas-toolbar">
         <input
@@ -149,10 +187,20 @@ export default function FilasPage() {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
-        <button className="filas-btn-refresh" onClick={load} title="Atualizar dados">Atualizar</button>
-        <button className="filas-btn-filters" onClick={() => setShowFilters(!showFilters)}>
-          <FiSliders /> Filtros
-        </button>
+        <div className="rows-per-page-control">
+          <label htmlFor="rows-select">Linhas:</label>
+          <select
+            id="rows-select"
+            className="rows-select"
+            value={rowsPerPage}
+            onChange={(e) => setRowsPerPage(Number(e.target.value))}
+          >
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value={200}>200</option>
+          </select>
+        </div>
       </div>
 
       {showFilters && (
@@ -161,6 +209,8 @@ export default function FilasPage() {
           onClose={() => setShowFilters(false)}
         />
       )}
+
+      <ActiveFilters filters={filters} onRemoveFilter={onRemoveFilter} onClearAll={onClearAllFilters} />
 
       {apiError ? (
         <div className="alert-warning" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -177,11 +227,19 @@ export default function FilasPage() {
       ) : null}
 
       {!error ? (
-        <Table data={filteredData} loading={loading} onView={onView} onLogs={onLogs} onReprocess={onReprocess} onViewJson={(row, field, title) => {
-          const payload = row?.raw?.[field]
-          if (!payload) return setError(`Campo ${title} indisponível`)
-          setJsonView({ title, data: payload })
-        }} />
+        <Table 
+          data={filteredData} 
+          loading={loading} 
+          onView={onView} 
+          onLogs={onLogs} 
+          onReprocess={onReprocess} 
+          rowsPerPage={rowsPerPage}
+          onViewJson={(row, field, title) => {
+            const payload = row?.raw?.[field]
+            if (!payload) return setError(`Campo ${title} indisponível`)
+            setJsonView({ title, data: payload })
+          }} 
+        />
       ) : null}
       <DetailsModal open={!!details} onClose={() => setDetails(null)} data={details} />
       {jsonView ? (

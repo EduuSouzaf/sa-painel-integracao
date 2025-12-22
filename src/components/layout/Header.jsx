@@ -21,12 +21,12 @@ export default function Header({ onToggleSidebar, collapsed }) {
         <h1 className="logo">Painel Integrações</h1>
       </div>
       <div className="right">
-        <Button variant="ghost" onClick={toggle} aria-label="Alternar tema">
-          {theme === 'dark' ? <FiSun /> : <FiMoon />} {theme === 'dark' ? 'Claro' : 'Escuro'}
+        <Button variant="ghost" className="header-button" onClick={toggle} aria-label="Alternar tema">
+          {theme === 'dark' ? <FiSun /> : <FiMoon />}
         </Button>
         {user ? (
-          <Button variant="ghost" onClick={() => { logout(); navigate('/login') }}>
-            <FiLogOut /> Sair
+          <Button variant="ghost" className="header-button" onClick={() => { logout(); navigate('/login') }}>
+            <FiLogOut />
           </Button>
         ) : null}
       </div>

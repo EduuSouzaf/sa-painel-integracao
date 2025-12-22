@@ -1,10 +1,20 @@
-.page-header { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+.page-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.page-header-left { display: flex; flex-direction: column; gap: 4px; flex: 1 1 auto; text-align: left; align-items: flex-start; min-width: 0; }
+.page-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .page-title { font-size: 1.25rem; font-weight: 800; }
 .page-subtitle { color: var(--muted); }
+.page-title, .page-subtitle { text-align: left; }
 
 .filas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .filas-search { flex: 1; background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; outline: none; }
 .filas-search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent); }
+
+.rows-per-page-control { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.rows-per-page-control label { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+.rows-select { background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; outline: none; cursor: pointer; font-weight: 600; }
+.rows-select:hover { border-color: var(--primary); }
+.rows-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent); }
+
 .filas-btn-filters { padding: 10px 14px; background: transparent; border: 1px solid var(--border); border-radius: 10px; color: var(--text); cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 .filas-btn-filters:hover { background: color-mix(in oklab, var(--text) 4%, transparent); }
 .filas-btn-refresh { padding: 10px 14px; background: var(--primary); color: #fff; border: 1px solid color-mix(in oklab, var(--primary) 40%, var(--border)); border-radius: 10px; cursor: pointer; font-weight: 700; }

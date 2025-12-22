@@ -11,11 +11,12 @@ import {
 import Badge from '../common/Badge'
 import Skeleton from '../common/Skeleton'
 import Button from '../common/Button'
+import ActionsMenu from './ActionsMenu'
 import { statusLabel, statusColor } from '../../utils/enums'
 import { fluxoFilasLabel, metodoFilasLabel, tipoAgroLabel, tipoSapLabel } from '../../utils/filasEnums'
 import { FiEye, FiFileText, FiRefreshCw, FiCode, FiFile, FiCheckSquare } from 'react-icons/fi'
 
-export default function Table({ data, loading, onView, onLogs, onReprocess, onViewJson }) {
+export default function Table({ data, loading, onView, onLogs, onReprocess, onViewJson, rowsPerPage = 50 }) {
   const columns = useMemo(
     () => [
       { header: 'ID', accessorKey: 'id' },
@@ -79,10 +80,15 @@ export default function Table({ data, loading, onView, onLogs, onReprocess, onVi
       {
         header: 'Status',
         accessorKey: 'status',
-        cell: ({ getValue }) => {
+        cell: ({ row, getValue }) => {
           const v = getValue()
+          const item = row.original
+          const attempts = item?.attempts || 0
+          const createdAt = item?.createdAt ? new Date(item.createdAt).toLocaleString('pt-BR') : 'N/A'
+          const tooltip = `Tentativas: ${attempts}\nÚltima execução: ${createdAt}`
+          
           return (
-            <div className="flex items-center">
+            <div className="status-cell" title={tooltip}>
               <Badge color={statusColor(v)}>{statusLabel(v)}</Badge>
             </div>
           )
@@ -102,29 +108,13 @@ export default function Table({ data, loading, onView, onLogs, onReprocess, onVi
         cell: ({ row }) => {
           const r = row.original
           return (
-            <div className="table-actions">
-              <button className="action-btn btn-detalhes" onClick={() => onView(r)} title="Ver detalhes">
-                Detalhes
-              </button>
-              <button className="action-btn btn-logs" onClick={() => onLogs(r)} title="Ver logs">
-                Logs
-              </button>
-              {r.status === 'error' ? (
-                <button className="action-btn btn-reprocessar" onClick={() => onReprocess(r)} title="Reprocessar">
-                  Reprocessar
-                </button>
-              ) : null}
-              {r?.raw?.envio ? (
-                <button className="action-btn btn-envio" onClick={() => onViewJson?.(r, 'envio', 'Envio')} title="Ver envio">
-                  Envio
-                </button>
-              ) : null}
-              {r?.raw?.envioOriginal ? (
-                <button className="action-btn btn-envio-original" onClick={() => onViewJson?.(r, 'envioOriginal', 'Envio Original')} title="Ver envio original">
-                  Envio Original
-                </button>
-              ) : null}
-            </div>
+            <ActionsMenu
+              row={r}
+              onView={onView}
+              onLogs={onLogs}
+              onReprocess={onReprocess}
+              onViewJson={onViewJson}
+            />
           )
         },
       },
@@ -149,7 +139,16 @@ export default function Table({ data, loading, onView, onLogs, onReprocess, onVi
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: rowsPerPage,
+      },
+    },
   })
+
+  useEffect(() => {
+    table.setPageSize(rowsPerPage)
+  }, [rowsPerPage, table])
 
   return (
     <div className="table-wrap">

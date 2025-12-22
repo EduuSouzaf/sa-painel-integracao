@@ -11,10 +11,10 @@ export default function Sidebar({ collapsed }) {
         {/* Removido texto: apenas a logo conforme solicitado */}
       </div>
       <nav>
-        <NavLink to="/dashboard" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/dashboard" title="Dashboard" aria-label="Dashboard" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
           <FiActivity /> <span>Dashboard</span>
         </NavLink>
-        <NavLink to="/filas" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/filas" title="Filas" aria-label="Filas" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
           <FiList /> <span>Filas</span>
         </NavLink>
       </nav>
