@@ -1,4 +1,5 @@
 import './SummaryCards.css'
+import { FiCheckCircle, FiAlertTriangle, FiXCircle, FiLayers, FiTrendingUp } from 'react-icons/fi'
 
 export default function SummaryCards({ data = [], onFilterClick }) {
   const total = data.length
@@ -12,7 +13,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
       id: 'total',
       label: 'Total de Registros',
       value: total.toLocaleString('pt-BR'),
-      icon: '📊',
+      icon: <FiLayers size={18} />,
       color: '#1f6feb',
       action: null,
     },
@@ -20,7 +21,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
       id: 'success',
       label: 'Sucessos',
       value: success.toLocaleString('pt-BR'),
-      icon: '✅',
+      icon: <FiCheckCircle size={18} />,
       color: '#3fb950',
       action: 'success',
     },
@@ -28,7 +29,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
       id: 'errors',
       label: 'Erros',
       value: errors.toLocaleString('pt-BR'),
-      icon: '❌',
+      icon: <FiXCircle size={18} />,
       color: '#f85149',
       action: 'error',
     },
@@ -36,7 +37,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
       id: 'deadletter',
       label: 'Dead Letter',
       value: deadLetter.toLocaleString('pt-BR'),
-      icon: '⚠️',
+      icon: <FiAlertTriangle size={18} />,
       color: '#d29922',
       action: 'warning',
     },
@@ -44,7 +45,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
       id: 'rate',
       label: 'Taxa de Sucesso',
       value: `${successRate}%`,
-      icon: '📈',
+      icon: <FiTrendingUp size={18} />,
       color: successRate >= 90 ? '#3fb950' : successRate >= 70 ? '#d29922' : '#f85149',
       action: null,
     },

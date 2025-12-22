@@ -9,7 +9,7 @@ import TableFilters from '../components/table/TableFilters'
 import SummaryCards from '../components/kpi/SummaryCards'
 import ActiveFilters from '../components/table/ActiveFilters'
 import './FilasPage.css'
-import { FiSliders, FiAlertTriangle, FiXCircle } from 'react-icons/fi'
+import { FiSliders, FiAlertTriangle, FiXCircle, FiRefreshCw } from 'react-icons/fi'
 import { getFilas, getLogsById, reprocessar } from '../services/api/filas'
 import { toStatusFilas, fluxoFilasLabel, metodoFilasLabel } from '../utils/filasEnums'
 
@@ -170,9 +170,11 @@ export default function FilasPage() {
           <div className="page-subtitle">Monitore e gerencie as integrações do sistema.</div>
         </div>
         <div className="page-actions">
-          <button className="filas-btn-refresh" onClick={load} title="Atualizar dados">Atualizar</button>
-          <button className="filas-btn-filters" onClick={() => setShowFilters(!showFilters)}>
-            <FiSliders /> Filtros
+          <button className="filas-btn-refresh" onClick={load} title="Atualizar dados">
+            <FiRefreshCw size={15} />
+          </button>
+          <button className="filas-btn-filters" onClick={() => setShowFilters(!showFilters)} title="Filtros avançados">
+            <FiSliders size={15} />
           </button>
         </div>
       </div>
