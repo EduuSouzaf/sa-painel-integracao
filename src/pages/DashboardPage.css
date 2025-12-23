@@ -1,6 +1,6 @@
 .page-header { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
-.page-title { font-size: 1.25rem; font-weight: 800; }
-.page-subtitle { color: var(--muted); }
+.page-title { font-size: 1.1rem; font-weight: 700; }
+.page-subtitle { color: var(--muted); font-size: 0.88rem; opacity: 0.85; }
 
 .alert-warning { border: 1px solid color-mix(in oklab, #f59e0b 40%, var(--border)); background: color-mix(in oklab, #f59e0b 12%, transparent); color: color-mix(in oklab, #f59e0b 90%, var(--text)); padding: 10px 12px; border-radius: 10px; margin-bottom: 16px; }
 

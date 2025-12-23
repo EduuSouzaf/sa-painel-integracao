@@ -23,7 +23,7 @@
 .theme-light .login-card { background: color-mix(in oklab, white 85%, transparent); border: 1px solid color-mix(in oklab, var(--primary) 10%, var(--border)); box-shadow: 0 12px 32px rgba(59,130,246,.18); }
 .theme-light .login-subtitle { color: color-mix(in oklab, var(--muted) 78%, transparent); }
 
-.theme-dark .login-card, .login-card:where(html:not(.theme-light)) { background: color-mix(in oklab, #0b1220 60%, transparent); border: 1px solid color-mix(in oklab, white 8%, var(--border)); box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+.theme-dark .login-card, .login-card:where(html:not(.theme-light)) { background: color-mix(in oklab, #0b1220 75%, transparent); border: 1px solid color-mix(in oklab, white 12%, var(--border)); box-shadow: 0 16px 40px rgba(0,0,0,.6); }
 
 @media (max-width: 768px) {
 	:root { --waves-h: 260px; }

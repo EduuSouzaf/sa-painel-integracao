@@ -5,16 +5,17 @@ import LogsModal from '../components/modals/LogsModal'
 import DetailsModal from '../components/modals/DetailsModal'
 import JsonViewer from '../components/common/JsonViewer'
 import Toast from '../components/common/Toast'
+import Modal from '../components/common/Modal'
 // TableFilters agora é renderizado dentro do componente Table
 import SummaryCards from '../components/kpi/SummaryCards'
 // ActiveFilters agora é renderizado dentro do componente Table
 import './FilasPage.css'
-import { FiAlertTriangle, FiXCircle } from 'react-icons/fi'
-import { getFilas, getLogsById, reprocessar } from '../services/api/filas'
+import { FiAlertTriangle, FiXCircle, FiRefreshCw } from 'react-icons/fi'
+import { getFilas, getLogsById, reprocessar, reprocessarErros } from '../services/api/filas'
 import { toStatusFilas, fluxoFilasLabel, metodoFilasLabel } from '../utils/filasEnums'
 
 export default function FilasPage() {
-  const [data, setData] = useState([])
+  const [rawData, setRawData] = useState([])
   const [filteredData, setFilteredData] = useState([])
   const [loading, setLoading] = useState(true)
   const [details, setDetails] = useState(null)
@@ -27,7 +28,12 @@ export default function FilasPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState({})
   const [rowsPerPage, setRowsPerPage] = useState(50)
+  const [bulkModalOpen, setBulkModalOpen] = useState(false)
+  const [bulkLoading, setBulkLoading] = useState(false)
+  const [ackProd, setAckProd] = useState(false)
+  const [lastBulk, setLastBulk] = useState(null)
   const location = useLocation()
+  const isProd = Boolean(import.meta?.env?.PROD)
 
   useEffect(() => {
     const err = sessionStorage.getItem('apiError')
@@ -43,6 +49,28 @@ export default function FilasPage() {
       setFilters((prev) => ({ ...prev, ...preset }))
     }
   }, [location?.state])
+  const applyFilters = useCallback((list, activeFilters) => {
+    if (!Array.isArray(list)) return []
+    let filtered = list
+
+    if (Object.values(activeFilters).some((v) => v !== '')) {
+      filtered = filtered.filter((item) => {
+        const raw = item.raw || {}
+        if (activeFilters.id && !item.id.toString().includes(activeFilters.id)) return false
+        if (activeFilters.status && item.status !== activeFilters.status) return false
+        if (activeFilters.data && !new Date(item.createdAt).toLocaleDateString('pt-BR').includes(activeFilters.data)) return false
+        if (activeFilters.baseSap && !raw.baseDadosSAP?.toLowerCase().includes(activeFilters.baseSap.toLowerCase())) return false
+        if (activeFilters.baseAgro && !raw.baseDadosAgro?.toLowerCase().includes(activeFilters.baseAgro.toLowerCase())) return false
+        if (activeFilters.tipoSap && !raw.tipoSAP?.toString().toLowerCase().includes(activeFilters.tipoSap.toLowerCase())) return false
+        if (activeFilters.tipoAgro && !raw.tipoAgro?.toString().toLowerCase().includes(activeFilters.tipoAgro.toLowerCase())) return false
+        if (activeFilters.idObjetoSap && !raw.idObjeto?.toString().includes(activeFilters.idObjetoSap)) return false
+        if (activeFilters.idObjetoAgro && !raw.idObjetoAgro?.toString().includes(activeFilters.idObjetoAgro)) return false
+        return true
+      })
+    }
+
+    return filtered
+  }, [])
   const mapItem = (it) => ({
     id: it?.id ?? it?.identificador ?? it?.uuid ?? '—',
     status: toStatusFilas(it?.status ?? it?.codigoStatus ?? it?.situacao),
@@ -68,13 +96,13 @@ export default function FilasPage() {
           if (!Number.isNaN(nb) && !Number.isNaN(na)) return nb - na
           return String(b.id).localeCompare(String(a.id))
         })
-        setData(mapped)
+        setRawData(mapped)
       } else {
-        setData([])
+        setRawData([])
       }
     } catch (e) {
       setError(e?.message || 'Falha ao carregar filas')
-      setData([])
+      setRawData([])
     } finally {
       setLoading(false)
     }
@@ -86,26 +114,8 @@ export default function FilasPage() {
 
   // Aplicar filtros avançados (busca global foi movida para a tabela)
   useEffect(() => {
-    let filtered = data
-    
-    // Aplicar filtros avançados
-    if (Object.values(filters).some(v => v !== '')) {
-      filtered = filtered.filter(item => {
-        const raw = item.raw || {}
-        if (filters.id && !item.id.toString().includes(filters.id)) return false
-        if (filters.data && !new Date(item.createdAt).toLocaleDateString('pt-BR').includes(filters.data)) return false
-        if (filters.baseSap && !raw.baseDadosSAP?.toLowerCase().includes(filters.baseSap.toLowerCase())) return false
-        if (filters.baseAgro && !raw.baseDadosAgro?.toLowerCase().includes(filters.baseAgro.toLowerCase())) return false
-        if (filters.tipoSap && !raw.tipoSAP?.toString().toLowerCase().includes(filters.tipoSap.toLowerCase())) return false
-        if (filters.tipoAgro && !raw.tipoAgro?.toString().toLowerCase().includes(filters.tipoAgro.toLowerCase())) return false
-        if (filters.idObjetoSap && !raw.idObjeto?.toString().includes(filters.idObjetoSap)) return false
-        if (filters.idObjetoAgro && !raw.idObjetoAgro?.toString().includes(filters.idObjetoAgro)) return false
-        return true
-      })
-    }
-    
-    setFilteredData(filtered)
-  }, [data, filters])
+    setFilteredData(applyFilters(rawData, filters))
+  }, [rawData, filters, applyFilters])
 
   const onView = (row) => {
     // Abre o modal de detalhes com os dados brutos da fila
@@ -135,12 +145,42 @@ export default function FilasPage() {
     }
   }
 
+  const errorCount = rawData.filter((item) => item.status === 'error').length
+  const shouldShowBulkButton = !loading && filters.status === 'error' && errorCount > 0
+
+  const handleOpenBulkModal = () => {
+    setAckProd(false)
+    setBulkModalOpen(true)
+  }
+
+  const handleBulkReprocess = async () => {
+    if (isProd && !ackProd) return
+    setBulkLoading(true)
+    try {
+      await reprocessarErros()
+      setToasts((prev) => [
+        ...prev,
+        { id: Date.now(), type: 'info', message: '🔄 Reprocessamento iniciado. Os registros serão processados em segundo plano.' },
+      ])
+      setLastBulk(new Date())
+      setBulkModalOpen(false)
+      await load()
+    } catch (e) {
+      setToasts((prev) => [
+        ...prev,
+        { id: Date.now(), type: 'error', message: e?.message || 'Falha ao reprocessar erros' },
+      ])
+    } finally {
+      setBulkLoading(false)
+    }
+  }
+
   const removeToast = (id) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id))
   }
 
   const onSummaryCardClick = (status) => {
-    setFilters({ ...filters, status: status === 'warning' ? 'warning' : status })
+    setFilters((prev) => ({ ...prev, status: status === 'warning' ? 'warning' : status }))
     setShowFilters(false)
   }
 
@@ -163,7 +203,7 @@ export default function FilasPage() {
         </div>
       </div>
 
-      <SummaryCards data={filteredData} onFilterClick={onSummaryCardClick} />
+      <SummaryCards data={rawData} onFilterClick={onSummaryCardClick} />
 
       {/* Barra de busca, atualizar e filtros foi movida para dentro do componente Table */}
 
@@ -203,6 +243,17 @@ export default function FilasPage() {
           onRemoveFilter={onRemoveFilter}
           onClearAllFilters={onClearAllFilters}
           hideActiveFiltersWhenOpen={true}
+          extraActions={shouldShowBulkButton ? (
+            <button
+              className="table-btn table-btn-attention"
+              onClick={handleOpenBulkModal}
+              title="Reprocessar todos os registros com erro"
+              disabled={bulkLoading}
+            >
+              <FiRefreshCw size={15} />
+              Reprocessar erros ({errorCount})
+            </button>
+          ) : null}
           onViewJson={(row, field, title) => {
             const payload = row?.raw?.[field]
             if (!payload) return setError(`Campo ${title} indisponível`)
@@ -210,6 +261,41 @@ export default function FilasPage() {
           }} 
         />
       ) : null}
+
+      <Modal
+        open={bulkModalOpen}
+        onClose={() => setBulkModalOpen(false)}
+        title="Reprocessar registros com erro"
+        width={520}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <p>
+            Você está prestes a reprocessar <strong>{errorCount}</strong> integrações com status <strong>ERRO</strong>.
+            Essa ação será executada em segundo plano e não pode ser desfeita.
+          </p>
+          {lastBulk ? (
+            <small style={{ color: 'var(--muted)' }}>
+              Última execução: {lastBulk.toLocaleString('pt-BR')}
+            </small>
+          ) : null}
+          {isProd ? (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.95rem' }}>
+              <input type="checkbox" checked={ackProd} onChange={(e) => setAckProd(e.target.checked)} />
+              Confirmo a execução em produção
+            </label>
+          ) : null}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+            <button className="table-btn" onClick={() => setBulkModalOpen(false)} disabled={bulkLoading}>Cancelar</button>
+            <button
+              className="table-btn table-btn-attention"
+              onClick={handleBulkReprocess}
+              disabled={bulkLoading || (isProd && !ackProd)}
+            >
+              {bulkLoading ? 'Processando...' : '🔁 Reprocessar agora'}
+            </button>
+          </div>
+        </div>
+      </Modal>
       <DetailsModal open={!!details} onClose={() => setDetails(null)} data={details} />
       {jsonView ? (
         <JsonViewer data={jsonView.data} title={jsonView.title} onClose={() => setJsonView(null)} />

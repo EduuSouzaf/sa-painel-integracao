@@ -1,11 +1,15 @@
 .table-wrap { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
-.table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-.table-search { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+.table-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.table-search { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
 .table-toolbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.table-extra-actions { display: flex; align-items: center; gap: 8px; }
 .table-btn { padding: 8px 12px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: color-mix(in oklab, var(--text) 85%, transparent); cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 6px; font-size: 0.88rem; transition: all 150ms ease; }
 .table-btn:hover { background: color-mix(in oklab, var(--text) 4%, transparent); color: var(--text); border-color: color-mix(in oklab, var(--border) 120%, transparent); }
+.table-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .table-btn-refresh {}
 .table-btn-filters {}
+.table-btn-attention { border-color: color-mix(in oklab, #f59e0b 50%, var(--border)); color: #f59e0b; background: color-mix(in oklab, #f59e0b 6%, transparent); }
+.table-btn-attention:hover { border-color: #f59e0b; background: color-mix(in oklab, #f59e0b 10%, transparent); color: #d97706; }
 .rows-per-page-control { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .rows-per-page-control label { font-size: 0.88rem; color: color-mix(in oklab, var(--text) 85%, transparent); font-weight: 500; }
 .rows-select { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; outline: none; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
@@ -24,8 +28,8 @@
 .overflow-x-auto::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 .overflow-x-auto::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 .data-table { width: 100%; border-collapse: collapse; min-width: 1400px; }
-.data-table th, .data-table td { padding: 12px 10px; border-bottom: 1px solid var(--border); text-align: left; font-size: .9rem; }
-.data-table th { cursor: pointer; color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: .8rem; letter-spacing: .5px; user-select: none; background: var(--bg-elev); position: sticky; top: 0; z-index: 10; }
+.data-table th, .data-table td { padding: 11px 10px; border-bottom: 1px solid var(--border); text-align: left; font-size: .9rem; }
+.data-table th { cursor: pointer; color: color-mix(in oklab, var(--text) 70%, transparent); font-weight: 700; text-transform: uppercase; font-size: .8rem; letter-spacing: .5px; user-select: none; background: color-mix(in oklab, var(--text) 2%, var(--bg-elev)); position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border); }
 .data-table th:hover { color: var(--text); }
 .data-table tbody tr:nth-child(odd) { background: color-mix(in oklab, var(--text) 2%, transparent); }
 .data-table tbody tr:hover td { background: color-mix(in oklab, var(--primary) 8%, transparent); transition: background 0.15s ease; }

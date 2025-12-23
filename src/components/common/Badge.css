@@ -5,8 +5,8 @@
 .badge-gray { background: color-mix(in oklab, var(--text) 8%, transparent); color: color-mix(in oklab, var(--text) 80%, transparent); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
 
 /* Badges semânticos para Tipo SAP (cores discretas, não competem com status) */
-.badge-type-blue { background: color-mix(in oklab, #1f6feb 22%, transparent); color: #ffffff; border: 1px solid color-mix(in oklab, #1f6feb 32%, transparent); }
-.badge-type-green { background: color-mix(in oklab, #22c55e 18%, transparent); color: #ffffff; border: 1px solid color-mix(in oklab, #22c55e 26%, transparent); }
-.badge-type-purple { background: color-mix(in oklab, #8b5cf6 18%, transparent); color: #ffffff; border: 1px solid color-mix(in oklab, #8b5cf6 26%, transparent); }
-.badge-type-orange { background: color-mix(in oklab, #f59e0b 18%, transparent); color: #ffffff; border: 1px solid color-mix(in oklab, #f59e0b 26%, transparent); }
-.badge-type-gray { background: color-mix(in oklab, var(--text) 8%, transparent); color: color-mix(in oklab, var(--text) 90%, transparent); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }
+.badge-type-blue { background: color-mix(in oklab, #1f6feb 22%, transparent); color: #1d4ed8; border: 1px solid color-mix(in oklab, #1f6feb 32%, transparent); }
+.badge-type-green { background: color-mix(in oklab, #22c55e 18%, transparent); color: #15803d; border: 1px solid color-mix(in oklab, #22c55e 26%, transparent); }
+.badge-type-purple { background: color-mix(in oklab, #8b5cf6 18%, transparent); color: #6d28d9; border: 1px solid color-mix(in oklab, #8b5cf6 26%, transparent); }
+.badge-type-orange { background: color-mix(in oklab, #f59e0b 18%, transparent); color: #b45309; border: 1px solid color-mix(in oklab, #f59e0b 26%, transparent); }
+.badge-type-gray { background: color-mix(in oklab, var(--text) 8%, transparent); color: color-mix(in oklab, var(--text) 75%, transparent); border: 1px solid color-mix(in oklab, var(--text) 12%, transparent); }

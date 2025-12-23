@@ -62,11 +62,10 @@
 .filters-actions {
   display: flex;
   gap: 8px;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
-.btn-clear,
-.btn-close {
+.btn-clear {
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -87,7 +86,3 @@
   color: #dc3545;
 }
 
-.btn-close:hover {
-  background: color-mix(in oklab, var(--text) 8%, transparent);
-  border-color: var(--text);
-}

@@ -1,6 +1,7 @@
 import './DetailsModal.css'
 import { useState } from 'react'
 import { FiMaximize2, FiMinimize2, FiCheckCircle, FiAlertCircle, FiClock, FiMessageSquare } from 'react-icons/fi'
+import { toStatusFilas } from '../../utils/filasEnums'
 
 function syntaxHighlight(json) {
   try {
@@ -40,6 +41,8 @@ export default function DetailsModal({ open, onClose, data }) {
     setExpanded(prev => ({ ...prev, [field]: !prev[field] }))
   }
 
+  const status = toStatusFilas(data?.status ?? data?.codigoStatus ?? data?.situacao)
+
   const timelineEvents = [
     {
       id: 'created',
@@ -50,10 +53,10 @@ export default function DetailsModal({ open, onClose, data }) {
     },
     {
       id: 'processed',
-      type: data?.status === 'success' ? 'success' : 'error',
+      type: status,
       time: data?.createdAt ? new Date(data.createdAt).toLocaleString('pt-BR') : 'N/A',
-      title: data?.status === 'success' ? 'Processado com sucesso' : 'Erro no processamento',
-      icon: data?.status === 'success' ? <FiCheckCircle size={16} /> : <FiAlertCircle size={16} />,
+      title: status === 'success' ? 'Processado com sucesso' : status === 'error' ? 'Erro no processamento' : 'Processamento pendente',
+      icon: status === 'success' ? <FiCheckCircle size={16} /> : status === 'error' ? <FiAlertCircle size={16} /> : <FiClock size={16} />,
       details: data?.mensagem || 'Sem detalhes',
     },
   ]
@@ -65,7 +68,7 @@ export default function DetailsModal({ open, onClose, data }) {
           <div className="modal-title-section">
             <strong>Detalhes da Fila {data?.id || ''}</strong>
             <span className="modal-status-badge" style={{ marginLeft: '12px', opacity: 0.7 }}>
-              {data?.status === 'success' ? '✓ Sucesso' : data?.status === 'error' ? '✗ Erro' : '⏳ Pendente'}
+              {status === 'success' ? '✓ Sucesso' : status === 'error' ? '✗ Erro' : '⏳ Pendente'}
             </span>
           </div>
           <button className="modal-close" onClick={onClose}>×</button>

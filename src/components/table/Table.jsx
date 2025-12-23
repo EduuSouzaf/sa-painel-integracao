@@ -36,6 +36,7 @@ export default function Table({
   onRemoveFilter,
   onClearAllFilters,
   hideActiveFiltersWhenOpen = true,
+  extraActions,
 }) {
   const columns = useMemo(
     () => [
@@ -184,31 +185,20 @@ export default function Table({
   return (
     <div className="table-wrap">
       <div className="table-toolbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
           <input
             className="table-search"
             type="text"
             placeholder="Buscar..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            style={{ flex: 1 }}
+            style={{ flex: 1, minWidth: 260 }}
           />
         </div>
         <div className="table-toolbar-actions">
-          <button
-            className="table-btn table-btn-refresh"
-            onClick={onRefresh}
-            title="Atualizar dados"
-          >
-            <FiRefreshCw size={15} />
-          </button>
-          <button
-            className="table-btn table-btn-filters"
-            onClick={onToggleFilters}
-            title="Filtros avançados"
-          >
-            <FiSliders size={15} />
-          </button>
+          {extraActions ? (
+            <div className="table-extra-actions">{extraActions}</div>
+          ) : null}
           <div className="rows-per-page-control">
             <label htmlFor="rows-select">Linhas:</label>
             <select
@@ -223,6 +213,20 @@ export default function Table({
               <option value={200}>200</option>
             </select>
           </div>
+          <button
+            className="table-btn table-btn-filters"
+            onClick={onToggleFilters}
+            title="Filtros avançados"
+          >
+            <FiSliders size={15} />
+          </button>
+          <button
+            className="table-btn table-btn-refresh"
+            onClick={onRefresh}
+            title="Atualizar dados"
+          >
+            <FiRefreshCw size={15} />
+          </button>
         </div>
       </div>
 

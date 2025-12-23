@@ -1,20 +1,17 @@
-.app-sidebar { position: fixed; top: 64px; bottom: 0; left: 0; width: 240px; background: var(--bg-base); border-right: 1px solid color-mix(in oklab, var(--border) 80%, transparent); padding: 10px; transition: width 220ms ease; overflow: hidden; display: flex; flex-direction: column; }
+.app-sidebar { position: fixed; top: 52px; bottom: 0; left: 0; width: 240px; background: var(--bg-base); border-right: 1px solid var(--border); padding: 10px; transition: width 220ms ease; overflow: hidden; display: flex; flex-direction: column; }
 .app-sidebar.collapsed { width: 72px; }
 
-.sidebar-header { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 8px; margin-bottom: 6px; border-bottom: 1px solid color-mix(in oklab, var(--border) 60%, transparent); transition: padding 180ms ease, margin 180ms ease, opacity 160ms ease; }
-.sidebar-logo { height: 40px; width: auto; max-width: 100%; object-fit: contain; display: block; image-rendering: -webkit-optimize-contrast; filter: drop-shadow(0 0 0 transparent); opacity: .9; }
-.app-sidebar.collapsed .sidebar-header { padding: 8px 0 12px 0; margin: 0 0 8px 0; border-bottom: none; }
-.app-sidebar.collapsed .sidebar-logo { height: 36px; }
-.sidebar-title { font-weight: 600; font-size: 0.9rem; color: var(--text); white-space: nowrap; }
-.app-sidebar.collapsed .sidebar-title { display: none; }
+.logo-container { height: 68px; display: flex; align-items: center; justify-content: center; background: color-mix(in oklab, var(--bg-elev) 60%, var(--bg-base)); border-radius: 10px; margin: 2px 2px 10px 2px; border: 1px solid var(--border); }
+.logo-image { height: 30px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px var(--shadow)); }
+.app-sidebar.collapsed .logo-container { height: 68px; margin: 2px; }
 
 .app-sidebar nav { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-.link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: color-mix(in oklab, var(--muted) 85%, transparent); text-decoration: none; border: 1px solid transparent; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, padding 150ms ease, box-shadow 150ms ease; font-size: .95rem; min-height: 44px; position: relative; }
-.link:hover { background: color-mix(in oklab, var(--text) 4%, transparent); color: color-mix(in oklab, var(--text) 90%, transparent); }
-.link.active { border-color: transparent; background: color-mix(in oklab, var(--text) 6%, transparent); color: var(--text); box-shadow: inset 3px 0 0 #3b82f6; }
-.link svg { font-size: 18px; color: color-mix(in oklab, var(--muted) 70%, transparent); transition: color 150ms ease; }
-.link:hover svg { color: color-mix(in oklab, var(--text) 85%, transparent); }
-.link.active svg { color: #3b82f6; }
+.link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: color-mix(in oklab, var(--text) 65%, transparent); text-decoration: none; border: 1px solid transparent; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, padding 150ms ease, box-shadow 150ms ease; font-size: .95rem; min-height: 44px; position: relative; }
+.link:hover { background: color-mix(in oklab, var(--text) 6%, transparent); color: color-mix(in oklab, var(--text) 85%, transparent); }
+.link.active { border-color: transparent; background: color-mix(in oklab, var(--primary) 14%, transparent); color: var(--primary); box-shadow: none; border: 1px solid color-mix(in oklab, var(--primary) 40%, transparent); }
+.link svg { font-size: 18px; color: color-mix(in oklab, var(--text) 60%, transparent); transition: color 150ms ease; }
+.link:hover svg { color: color-mix(in oklab, var(--text) 82%, transparent); }
+.link.active svg { color: var(--primary); opacity: 0.9; }
 .link span { white-space: nowrap; transition: opacity 160ms ease, max-width 160ms ease; max-width: 200px; font-weight: 500; }
 .link.active span { font-weight: 600; }
 .app-sidebar.collapsed .link { justify-content: center; padding: 10px; width: 48px; height: 48px; margin-inline: auto; border-radius: 12px; }

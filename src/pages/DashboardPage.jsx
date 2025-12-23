@@ -7,7 +7,7 @@ import ProcessingChart from '../components/charts/ProcessingChart'
 import { FiCheckCircle, FiAlertTriangle, FiXCircle, FiLayers, FiTrendingUp } from 'react-icons/fi'
 import Skeleton from '../components/common/Skeleton'
 import { getFilas } from '../services/api/filas'
-import { toStatusFilas, tipoSapLabel, tipoAgroLabel } from '../utils/filasEnums'
+import { toStatusFilas, tipoSapLabel } from '../utils/filasEnums'
 import './DashboardPage.css'
 
 export default function DashboardPage() {
@@ -85,17 +85,14 @@ export default function DashboardPage() {
       }
     })
 
-    // Top erros por tipo (7 dias)
+    // Top erros por tipo SAP (7 dias)
     const errorByType = {}
     last7.forEach((f) => {
       const s = toStatusFilas(f?.status ?? f?.codigoStatus ?? f?.situacao)
       if (s !== 'error') return
       const raw = f
-      const tipo = raw?.tipoSap ?? raw?.tipo ?? raw?.objeto ?? raw?.tipoAgro
-      let label = 'Desconhecido'
-      if (raw?.tipoSap != null) label = tipoSapLabel(raw?.tipoSap)
-      else if (raw?.tipoAgro != null) label = tipoAgroLabel(raw?.tipoAgro)
-      else if (typeof tipo === 'string') label = tipo
+      const tipoSapKey = raw?.tipoSAP ?? raw?.tipoSap ?? raw?.tipo_sap ?? null
+      const label = tipoSapKey != null ? tipoSapLabel(tipoSapKey) : 'Sem tipo SAP'
       errorByType[label] = (errorByType[label] || 0) + 1
     })
     const topErrors = Object.entries(errorByType)

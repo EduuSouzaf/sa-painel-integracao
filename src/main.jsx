@@ -6,8 +6,22 @@ import './index.css'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AlertProvider } from './contexts/AlertContext'
+import appLogo from './assets/SaaSAgro.png'
+import favicon from './assets/rsaasagro.png'
+
+function applyBranding() {
+  if (typeof document !== 'undefined') {
+    document.title = 'SA - Painel Integrações'
+    const link = document.querySelector("link[rel~='icon']") || document.createElement('link')
+    link.rel = 'icon'
+    link.type = 'image/png'
+    link.href = favicon
+    if (!link.parentNode) document.head.appendChild(link)
+  }
+}
 
 async function bootstrap() {
+  applyBranding()
   // Aguarda até window.__APP_CONFIG__ estar disponível (carregado pelo index.html)
   let attempts = 0;
   while (!window.__APP_CONFIG__ && attempts < 100) {

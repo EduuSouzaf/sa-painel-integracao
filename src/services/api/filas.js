@@ -37,3 +37,10 @@ export async function reprocessar(id) {
   if (data?.success === false) throw new Error(data?.message || 'Falha ao reprocessar')
   return data
 }
+
+export async function reprocessarErros() {
+  // Endpoint para reprocessamento em lote de registros com status ERRO
+  const { data } = await http.post('/reprocessafila/errors')
+  if (data?.success === false) throw new Error(data?.message || 'Falha ao reprocessar erros')
+  return data
+}

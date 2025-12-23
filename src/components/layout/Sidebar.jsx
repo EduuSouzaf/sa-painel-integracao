@@ -6,9 +6,8 @@ import { FiActivity, FiList } from 'react-icons/fi'
 export default function Sidebar({ collapsed }) {
   return (
     <aside className={`app-sidebar ${collapsed ? 'collapsed' : ''}`}>
-      <div className="sidebar-header">
-        <img src={logo} alt="SaaSAgro" className="sidebar-logo" />
-        {/* Removido texto: apenas a logo conforme solicitado */}
+      <div className="logo-container" aria-label="Logo SaaSAgro">
+        <img src={logo} alt="SaaSAgro" className="logo-image" />
       </div>
       <nav>
         <NavLink to="/dashboard" title="Dashboard" aria-label="Dashboard" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>

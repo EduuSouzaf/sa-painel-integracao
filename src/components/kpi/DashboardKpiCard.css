@@ -1,8 +1,8 @@
 .dkpi-card { position: relative; padding: 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-elev); box-shadow: 0 10px 22px color-mix(in oklab, var(--text) 6%, transparent); display: block; text-align: left; width: 100%; cursor: pointer; transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease; }
 .dkpi-card:hover { transform: translateY(-1px); box-shadow: 0 16px 26px color-mix(in oklab, var(--text) 8%, transparent); border-color: color-mix(in oklab, var(--primary) 30%, var(--border)); }
-.dkpi-chip { position: absolute; right: 12px; top: 12px; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-size: 16px; opacity: .9; }
-.dkpi-title { color: var(--muted); font-weight: 700; font-size: .9rem; }
-.dkpi-value { font-size: 1.8rem; font-weight: 900; margin-top: 2px; }
+.dkpi-chip { position: absolute; right: 12px; top: 12px; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-size: 16px; opacity: .65; }
+.dkpi-title { color: var(--muted); font-weight: 600; font-size: .88rem; opacity: 0.9; }
+.dkpi-value { font-size: 1.9rem; font-weight: 900; margin-top: 2px; letter-spacing: -0.02em; }
 .dkpi-delta { margin-top: 8px; display: inline-flex; align-items: baseline; gap: 6px; font-weight: 700; }
 .dkpi-delta .dkpi-delta-label { color: var(--muted); font-weight: 600; font-size: .85rem; }
 

@@ -102,9 +102,6 @@ export default function TableFilters({ onFilterChange, onClose }) {
             <FiX size={16} /> Limpar Filtros
           </button>
         )}
-        <button className="btn-close" onClick={onClose}>
-          Fechar
-        </button>
       </div>
     </div>
   )
