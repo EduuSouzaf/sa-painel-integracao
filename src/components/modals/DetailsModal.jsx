@@ -7,7 +7,7 @@ function syntaxHighlight(json) {
   try {
     if (typeof json !== 'string') json = JSON.stringify(json, null, 2)
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    return json.replace(/"(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, function (match) {
+    return json.replace(/"(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, function (match) {
       let cls = 'json-number'
       if (/^"/.test(match)) {
         if (/:$/.test(match)) cls = 'json-key'
@@ -21,11 +21,9 @@ function syntaxHighlight(json) {
   }
 }
 
-export default function DetailsModal({ open, onClose, data }) {
+export default function DetailsModal({ open, onClose, data, logs = [], loadingLogs = false }) {
   const [expanded, setExpanded] = useState({})
   const [activeTab, setActiveTab] = useState('timeline')
-  
-  if (!open) return null
   
   const formatMaybeJson = (val) => {
     if (val === null || val === undefined) return { text: 'null', html: null }
@@ -43,7 +41,19 @@ export default function DetailsModal({ open, onClose, data }) {
 
   const status = toStatusFilas(data?.status ?? data?.codigoStatus ?? data?.situacao)
 
-  const timelineEvents = [
+  const timelineEvents = logs && logs.length ? logs.map((l) => {
+    const isError = l.label === 'ERRO' || l.level === 1
+    const isWarn = l.label === 'AVISO' || l.level === 2
+    const type = isError ? 'error' : isWarn ? 'warning' : 'success'
+    return {
+      id: `log-${l.id}`,
+      type,
+      time: l.ts ? new Date(l.ts).toLocaleString('pt-BR') : '—',
+      title: l.message || 'Evento',
+      icon: isError ? <FiAlertCircle size={16} /> : isWarn ? <FiMessageSquare size={16} /> : <FiCheckCircle size={16} />,
+      details: l?.details?.mensagem || l?.details?.json || l?.details?.stackTrace,
+    }
+  }) : [
     {
       id: 'created',
       type: 'created',
@@ -60,6 +70,8 @@ export default function DetailsModal({ open, onClose, data }) {
       details: data?.mensagem || 'Sem detalhes',
     },
   ]
+  
+  if (!open) return null
   
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -92,7 +104,23 @@ export default function DetailsModal({ open, onClose, data }) {
         <div className="modal-body">
           {activeTab === 'timeline' && (
             <div className="timeline-container">
-              {timelineEvents.map((event, idx) => (
+              {loadingLogs ? (
+                <div className="timeline-event timeline-loading">
+                  <div className="timeline-marker"><FiClock size={16} /></div>
+                  <div className="timeline-content">
+                    <div className="timeline-title">Carregando timeline...</div>
+                  </div>
+                </div>
+              ) : null}
+              {!loadingLogs && timelineEvents.length === 0 ? (
+                <div className="timeline-event timeline-neutral">
+                  <div className="timeline-marker"><FiMessageSquare size={16} /></div>
+                  <div className="timeline-content">
+                    <div className="timeline-title">Nenhum evento encontrado</div>
+                  </div>
+                </div>
+              ) : null}
+              {timelineEvents.map((event) => (
                 <div key={event.id} className={`timeline-event timeline-${event.type}`}>
                   <div className="timeline-marker">
                     {event.icon}

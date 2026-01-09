@@ -184,6 +184,14 @@ export function tipoSapLabel(key) {
   return TipoSapLabelMap[it.value] || it.value
 }
 
+// Enum normalizado para consulta direta por value -> key
+export const TipoObjetoSapEnum = Object.freeze(
+  TipoObjetoEnum.reduce((acc, cur) => ({ ...acc, [cur.value]: cur.key }), {})
+)
+
+// Opções prontas para selects/filtros de Tipo SAP
+export const TipoSapOptions = TipoObjetoEnum.map((opt) => ({ key: opt.key, label: tipoSapLabel(opt.key) }))
+
 // Informações para badge semântico de Tipo SAP
 export function tipoSapBadgeInfo(key) {
   const it = findByKey(TipoObjetoEnum, Number(key))

@@ -6,7 +6,6 @@ import './index.css'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AlertProvider } from './contexts/AlertContext'
-import appLogo from './assets/SaaSAgro.png'
 import favicon from './assets/rsaasagro.png'
 
 function applyBranding() {

@@ -19,6 +19,8 @@ export default function FilasPage() {
   const [filteredData, setFilteredData] = useState([])
   const [loading, setLoading] = useState(true)
   const [details, setDetails] = useState(null)
+  const [detailsLogs, setDetailsLogs] = useState([])
+  const [detailsLogsLoading, setDetailsLogsLoading] = useState(false)
   const [logs, setLogs] = useState({ open: false, items: [] })
   // Busca global agora é feita dentro do componente Table
   const [error, setError] = useState('')
@@ -61,10 +63,15 @@ export default function FilasPage() {
         if (activeFilters.data && !new Date(item.createdAt).toLocaleDateString('pt-BR').includes(activeFilters.data)) return false
         if (activeFilters.baseSap && !raw.baseDadosSAP?.toLowerCase().includes(activeFilters.baseSap.toLowerCase())) return false
         if (activeFilters.baseAgro && !raw.baseDadosAgro?.toLowerCase().includes(activeFilters.baseAgro.toLowerCase())) return false
-        if (activeFilters.tipoSap && !raw.tipoSAP?.toString().toLowerCase().includes(activeFilters.tipoSap.toLowerCase())) return false
-        if (activeFilters.tipoAgro && !raw.tipoAgro?.toString().toLowerCase().includes(activeFilters.tipoAgro.toLowerCase())) return false
+        if (activeFilters.tipoSap && !raw.tipoSAP?.toString().includes(activeFilters.tipoSap)) return false
         if (activeFilters.idObjetoSap && !raw.idObjeto?.toString().includes(activeFilters.idObjetoSap)) return false
         if (activeFilters.idObjetoAgro && !raw.idObjetoAgro?.toString().includes(activeFilters.idObjetoAgro)) return false
+        if (activeFilters.flow) {
+          const fluxoKey = raw.fluxo ?? raw.segmento ?? null
+          const matchesKey = fluxoKey != null && String(fluxoKey) === String(activeFilters.flow)
+          const matchesLabel = fluxoFilasLabel(fluxoKey).toLowerCase() === String(activeFilters.flow).toLowerCase()
+          if (!matchesKey && !matchesLabel) return false
+        }
         return true
       })
     }
@@ -117,9 +124,18 @@ export default function FilasPage() {
     setFilteredData(applyFilters(rawData, filters))
   }, [rawData, filters, applyFilters])
 
-  const onView = (row) => {
-    // Abre o modal de detalhes com os dados brutos da fila
+  const onView = async (row) => {
     setDetails(row?.raw ?? row)
+    setDetailsLogs([])
+    setDetailsLogsLoading(true)
+    try {
+      const items = await getLogsById(row.id)
+      setDetailsLogs(items)
+    } catch (e) {
+      setError(e?.message || 'Falha ao obter logs')
+    } finally {
+      setDetailsLogsLoading(false)
+    }
   }
   const onLogs = async (row) => {
     try {
@@ -180,7 +196,11 @@ export default function FilasPage() {
   }
 
   const onSummaryCardClick = (status) => {
-    setFilters((prev) => ({ ...prev, status: status === 'warning' ? 'warning' : status }))
+    if (status === 'all') {
+      setFilters({})
+    } else {
+      setFilters((prev) => ({ ...prev, status: status === 'warning' ? 'warning' : status }))
+    }
     setShowFilters(false)
   }
 
@@ -296,7 +316,17 @@ export default function FilasPage() {
           </div>
         </div>
       </Modal>
-      <DetailsModal open={!!details} onClose={() => setDetails(null)} data={details} />
+      <DetailsModal
+        open={!!details}
+        onClose={() => {
+          setDetails(null)
+          setDetailsLogs([])
+          setDetailsLogsLoading(false)
+        }}
+        data={details}
+        logs={detailsLogs}
+        loadingLogs={detailsLogsLoading}
+      />
       {jsonView ? (
         <JsonViewer data={jsonView.data} title={jsonView.title} onClose={() => setJsonView(null)} />
       ) : null}

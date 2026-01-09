@@ -1,8 +1,10 @@
 import './ActiveFilters.css'
 import { FiX } from 'react-icons/fi'
+import { tipoSapLabel, fluxoFilasLabel } from '../../utils/filasEnums'
+import { statusLabel } from '../../utils/enums'
 
 export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
-  const activeFilters = Object.entries(filters).filter(([_, value]) => value !== '' && value !== null && value !== undefined)
+  const activeFilters = Object.entries(filters).filter(([, value]) => value !== '' && value !== null && value !== undefined)
 
   if (activeFilters.length === 0) return null
 
@@ -12,10 +14,17 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
     baseSap: 'Base SAP',
     baseAgro: 'Base Agro',
     tipoSap: 'Tipo SAP',
-    tipoAgro: 'Tipo Agro',
     status: 'Status',
     idObjetoSap: 'ID Objeto SAP',
     idObjetoAgro: 'ID Objeto Agro',
+    flow: 'Fluxo',
+  }
+
+  const formatFilterValue = (key, value) => {
+    if (key === 'tipoSap') return tipoSapLabel(value)
+    if (key === 'status') return statusLabel(value)
+    if (key === 'flow') return fluxoFilasLabel(value)
+    return value
   }
 
   return (
@@ -26,7 +35,7 @@ export default function ActiveFilters({ filters, onRemoveFilter, onClearAll }) {
           <div key={key} className="filter-badge">
             <span className="filter-key">{filterLabels[key] || key}</span>
             <span className="filter-separator">=</span>
-            <span className="filter-value">{value}</span>
+            <span className="filter-value">{formatFilterValue(key, value)}</span>
             <button
               className="filter-remove"
               onClick={() => onRemoveFilter(key)}

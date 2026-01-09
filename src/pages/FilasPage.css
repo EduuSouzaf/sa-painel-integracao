@@ -1,8 +1,8 @@
 .page-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .page-header-left { display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto; text-align: left; align-items: flex-start; min-width: 0; }
 .page-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.page-title { font-size: 1rem; font-weight: 700; color: var(--text); }
-.page-subtitle { color: var(--muted); font-size: 0.86rem; opacity: 0.85; }
+.page-title { font-size: 1.4rem; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
+.page-subtitle { color: var(--muted); font-size: 1rem; opacity: 0.9; }
 .page-title, .page-subtitle { text-align: left; }
 
 .filas-toolbar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; }

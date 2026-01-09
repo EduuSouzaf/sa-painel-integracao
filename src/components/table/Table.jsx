@@ -154,14 +154,45 @@ export default function Table({
   const effectiveData = useMemo(() => {
     if (!globalFilter) return data || []
     const g = String(globalFilter).toLowerCase()
+    const normalize = (v) => {
+      if (v === null || v === undefined) return ''
+      if (typeof v === 'object') {
+        try {
+          return JSON.stringify(v)
+        } catch {
+          return ''
+        }
+      }
+      return String(v)
+    }
     return (data || []).filter((item) => {
-      const idMatch = String(item.id).toLowerCase().includes(g)
-      const statusMatch = String(item.status).toLowerCase().includes(g)
-      const objetoMatch = String(item?.raw?.objeto ?? '').toLowerCase().includes(g)
-      return idMatch || statusMatch || objetoMatch
+      const raw = item?.raw || {}
+      const haystack = [
+        item.id,
+        item.status,
+        statusLabel?.(item.status),
+        item.flow,
+        item.method,
+        raw.baseDadosSAP,
+        raw.baseDadosAgro,
+        raw.tipoSAP,
+        raw.tipoAgro,
+        raw.idObjeto,
+        raw.idObjetoAgro,
+        raw.objeto,
+        raw.mensagem,
+        raw.envio,
+        raw.envioOriginal,
+        raw.resposta,
+      ]
+        .map(normalize)
+        .join(' ') // concatena valores que o usuário enxerga
+        .toLowerCase()
+      return haystack.includes(g)
     })
   }, [data, globalFilter])
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: effectiveData,
     columns,

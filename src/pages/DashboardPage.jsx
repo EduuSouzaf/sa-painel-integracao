@@ -99,12 +99,6 @@ export default function DashboardPage() {
       .map(([label, count]) => ({ label, count }))
       .sort((a, b) => b.count - a.count)
 
-    // Tempo médio de processamento (se existir campo), em segundos
-    const times = filas
-      .map((f) => f?.tempoProcessamentoMs ?? f?.processingTimeMs ?? f?.tempoMs ?? null)
-      .filter((v) => typeof v === 'number' && v > 0)
-    const avgProc = times.length ? (times.reduce((a, b) => a + b, 0) / times.length) / 1000 : null
-
     return {
       kpis: {
         total: { value: stats.total, delta: pct(t7, tP) },
@@ -112,7 +106,6 @@ export default function DashboardPage() {
         error: { value: stats.error, delta: pct(e7, eP) },
         warning: { value: stats.warning, delta: pct(w7, wP) },
         successRate: { value: successRate, delta: successRateDelta },
-        avgProcessingSec: avgProc,
       },
       chart: Object.values(monthsData),
       topErrors,
@@ -137,7 +130,7 @@ export default function DashboardPage() {
       const filas = await getFilas()
       const processedData = processFilasData(filas)
       setData(processedData)
-    } catch (err) {
+    } catch {
       setError('Não foi possível carregar os dados. Verifique sua conexão com o servidor.')
       setData(null)
     } finally {
@@ -240,17 +233,6 @@ export default function DashboardPage() {
               ) : (
                 <div className="right-grid">
                   <TopErrors items={data.topErrors} />
-                  <div className="section-card">
-                    <div className="section-head">
-                      <div className="section-title">Tempo médio de processamento</div>
-                      <div className="section-sub">Indicador de performance</div>
-                    </div>
-                    <div className="section-body">
-                      <div className="avg-time">
-                        {data.kpis.avgProcessingSec != null ? `${data.kpis.avgProcessingSec.toFixed(1)}s` : '—'}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
             </div>

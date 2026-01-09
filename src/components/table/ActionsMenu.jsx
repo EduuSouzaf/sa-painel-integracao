@@ -5,6 +5,19 @@ import './ActionsMenu.css'
 export default function ActionsMenu({ row, onView, onLogs, onReprocess, onViewJson }) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
+  const triggerRef = useRef(null)
+  const [coords, setCoords] = useState({ top: 0, right: 0 })
+
+  const updatePosition = () => {
+    if (!triggerRef.current) return
+    const rect = triggerRef.current.getBoundingClientRect()
+    const estHeight = 240
+    const gap = 6
+    const openDown = rect.bottom + estHeight <= window.innerHeight
+    const top = openDown ? rect.bottom + gap : Math.max(8, rect.top - estHeight - gap)
+    const right = Math.max(8, window.innerWidth - rect.right - 4)
+    setCoords({ top, right })
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -16,6 +29,18 @@ export default function ActionsMenu({ row, onView, onLogs, onReprocess, onViewJs
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  useEffect(() => {
+    if (!open) return
+    updatePosition()
+    const handleWindowChange = () => updatePosition()
+    window.addEventListener('scroll', handleWindowChange, true)
+    window.addEventListener('resize', handleWindowChange)
+    return () => {
+      window.removeEventListener('scroll', handleWindowChange, true)
+      window.removeEventListener('resize', handleWindowChange)
+    }
+  }, [open])
 
   const actions = [
     {
@@ -76,15 +101,20 @@ export default function ActionsMenu({ row, onView, onLogs, onReprocess, onViewJs
     <div className="actions-menu-wrapper" ref={menuRef}>
       <button
         className="actions-menu-trigger"
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          const next = !open
+          if (next) updatePosition()
+          setOpen(next)
+        }}
         title="Ver mais ações"
         aria-label="Menu de ações"
+        ref={triggerRef}
       >
         <FiMoreVertical size={18} />
       </button>
 
       {open && (
-        <div className="actions-menu-dropdown">
+        <div className="actions-menu-dropdown" style={{ top: coords.top, right: coords.right }}>
           {visibleActions.map((action) => (
             <button
               key={action.id}

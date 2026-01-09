@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FiChevronDown, FiX } from 'react-icons/fi'
 import Input from '../common/Input'
+import { FluxoEnumFilas, TipoObjetoEnum, tipoSapLabel } from '../../utils/filasEnums'
 import './TableFilters.css'
 
 export default function TableFilters({ onFilterChange, onClose }) {
@@ -10,9 +11,9 @@ export default function TableFilters({ onFilterChange, onClose }) {
     baseSap: '',
     baseAgro: '',
     tipoSap: '',
-    tipoAgro: '',
     idObjetoSap: '',
-    idObjetoAgro: ''
+    idObjetoAgro: '',
+    flow: '',
   })
 
   const handleChange = (field, value) => {
@@ -66,20 +67,21 @@ export default function TableFilters({ onFilterChange, onClose }) {
           onChange={(e) => handleChange('baseAgro', e.target.value)}
           placeholder="Ex: PROD, DEV"
         />
-        <Input
-          label="Tipo SAP"
-          type="text"
-          value={filters.tipoSap}
-          onChange={(e) => handleChange('tipoSap', e.target.value)}
-          placeholder="Tipo de Objeto SAP"
-        />
-        <Input
-          label="Tipo Agro"
-          type="text"
-          value={filters.tipoAgro}
-          onChange={(e) => handleChange('tipoAgro', e.target.value)}
-          placeholder="Tipo de Objeto Agro"
-        />
+        <div className="input-field">
+          <label className="input-label">Tipo SAP</label>
+          <div className="input-wrapper">
+            <select
+              className="input-control"
+              value={filters.tipoSap}
+              onChange={(e) => handleChange('tipoSap', e.target.value)}
+            >
+              <option value="">Todos</option>
+              {TipoObjetoEnum.filter((opt) => [2, 4, 17, 23].includes(opt.key)).map((opt) => (
+                <option key={opt.key} value={opt.key}>{tipoSapLabel(opt.key)}</option>
+              ))}
+            </select>
+          </div>
+        </div>
         <Input
           label="ID Objeto SAP"
           type="text"
@@ -94,6 +96,21 @@ export default function TableFilters({ onFilterChange, onClose }) {
           onChange={(e) => handleChange('idObjetoAgro', e.target.value)}
           placeholder="ID do Objeto Agro"
         />
+        <div className="input-field">
+          <label className="input-label">Fluxo</label>
+          <div className="input-wrapper">
+            <select
+              className="input-control"
+              value={filters.flow}
+              onChange={(e) => handleChange('flow', e.target.value)}
+            >
+              <option value="">Todos</option>
+              {FluxoEnumFilas.map((opt) => (
+                <option key={opt.key} value={opt.key}>{opt.value}</option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className="filters-actions">

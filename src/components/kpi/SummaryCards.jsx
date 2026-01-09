@@ -15,7 +15,7 @@ export default function SummaryCards({ data = [], onFilterClick }) {
       value: total.toLocaleString('pt-BR'),
       icon: <FiLayers size={18} />,
       color: '#1f6feb',
-      action: null,
+      action: 'all',
     },
     {
       id: 'success',
